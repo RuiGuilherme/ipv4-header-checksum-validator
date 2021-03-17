@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel="stylesheet" href="/css.css" />
+    <title>Calculadora de Checksum</title>
+    <script>
+        function appendResult(resultadoSoma, valido) {
+            // isso é gambiarra, não foquei muito em escrever o front-end, meu objetivo era apenas a API. 
+            // caso queira refatorar e fazer um merge request manda bala
+            const node = document.querySelector("#result")
+            resultadoSoma.map((props, key) => {
+                const { primeiroValor, segundoValor, resultado, resultadoFinal } = props
+                // {
+                //     "9": {
+                //         "resultadoFinal": {
+                //             "hexa": "21D5",
+                //             "bin": "0010000111010101"
+                //         }
+                //     }
+                // }
+                if (resultadoFinal) {
+                    const {hexa, bin} = resultadoFinal
+                    node.insertAdjacentHTML('beforeend', `
+                        <li style="font-size: 24px;">
+                            <p>
+                                <b>Resposta: ${hexa}</b><br/>
+                                <b>Binario: ${bin} </b><br/>
+                                <b>${valido ? "Não contém erro, está tudo certo" : "Contém algum erro nesse checksum" } </br>
+                            </p>
+                        </li>
+                    `)
+                } else {
+                    node.insertAdjacentHTML('beforeend', `
+                        <li>
+                            <p>
+                                <b> ${primeiroValor.hexa} -></b> ${primeiroValor.bin}<br/>
+                                <b> ${segundoValor.hexa} -></b> ${segundoValor.bin}<br/>
+                                <b> Soma: </b> ${primeiroValor.bin} <b>+</b> ${segundoValor.bin} <b>=</b> ${resultado.soma}<br/><br/>
+                                <b>Novo Hexa: ${resultado.hexa}
+                            </p>
+                        </li>
+                        `)
+                }
+            })
+        }
+
+        async function sendValues() {
+            const headerHexa = document.querySelector("#header_hexa").value
+            const header = document.querySelector("#header").value
+            const body = {hexa: headerHexa, header: header}
+
+            const { status, resultadoSoma, valido, message } = await fetch('/checar', {
+                method: 'POST',
+                cache: 'no-cache',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify(body)
+            }).then((response) => {
+                return response.json()
+            })
+
+            if (status !== "ok") {
+                alert(message)
+            }
+            else {
+                const node = document.querySelector("#result")
+                while (node.firstChild) {
+                    node.removeChild(node.lastChild);
+                }
+                appendResult(resultadoSoma, valido)
+            }
+        }
+    </script>
+</head>
+<body>
+    <form id="form" class="topBefore" action="javascript:sendValues()">
+        <input id="header_hexa" type="text" placeholder="4500 16D8 1250 4000 4006 0000 C881 B028 BFDF B771">
+        <input id="header" type="text" placeholder="21D5">
+        <input id="submit" type="submit" value="Calcular">
+        <h4>Exemplo de entrada:</h4>
+        <p style="font-weight:900">CheckSum: 4500 16D8 1250 4000 4006 0000 C881 B028 BFDF B771<br />
+        Header: 50B2</p>
+        <h4>Resultado:</h4>
+        <ul id="result"></ul>
+    </form>
+</body>
+</html> 

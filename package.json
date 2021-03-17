@@ -1,0 +1,17 @@
+{
+	"name": "headerchecksumcheck",
+	"version": "1.0.0",
+	"description": "Calcular se o checksum da header é válido",
+	"main": "server.js",
+	"author": "RuiGuilherme",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"start": "node server.js"
+	},
+	"dependencies": {
+		"@nanoexpress/middleware-static-serve": "^1.0.1",
+		"nanoexpress": "^2.4.13",
+		"path": "^0.12.7"
+	}
+}
