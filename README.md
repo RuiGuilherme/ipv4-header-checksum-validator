@@ -42,7 +42,7 @@ The application will be available on 127.0.0.1:8000
 </ul>
 
 #### Demo
-For now not available 
+[checksumvalidator.herokuapp.com](https://checksumvalidator.herokuapp.com/) - Remember that this is the free version of Heroku and may be unavailable.
 
 #### Author
 ###### Rui Guilherme
