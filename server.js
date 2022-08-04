@@ -91,9 +91,9 @@ app.post('/checar', (req, res) => {
 	const regexHeader = /^[A-Z0-9]{4}$/
 
 	if (!regexHexa.test(hexaUpcase)) {
-		res.send({ status: 'error', message: 'Valor hexadecimal não é válido' })
+		res.status(400).send({ status: 'error', message: 'Valor hexadecimal não é válido' })
 	} else if (!regexHeader.test(headerUpcase)) {
-		res.send({ status: 'error', message: 'Valor da header não é válido' })
+		res.status(400).send({ status: 'error', message: 'Valor da header não é válido' })
 	} else {
 		const arrayHexa = hexaUpcase.split(/\s+/)
 
