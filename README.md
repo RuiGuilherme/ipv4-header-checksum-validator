@@ -38,7 +38,7 @@ The application will be available on 127.0.0.1:8000
 
 #### Known issue
 <ul>
-<li>Only in Brazilian Portuguese </li>
+<li>Need support for other languages</li>
 </ul>
 
 #### Demo
